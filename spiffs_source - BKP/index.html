@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Light color</title>
+	<meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+		
+	<link rel="icon" href="data:,"> <!-- no favicon request  -->
+<!-- 	
+	<link rel="stylesheet" href="jquery.mobile-1.4.5.css"> 
+
+	<script src="jq.js"></script> 
+--> 	
+	
+<!--  -->	 	
+	<script src="jquery.mobile-1.4.5.js"></script>	
+
+
+	<script>		
+	function refreshConfig() {	
+		$.getJSON('getConfig', function(data) {
+			$.each(data, function(key, val) {
+				if(key == 'lux-RGB') {
+					$("#set-light-level-RGB").val(val);
+				}
+			});
+		});
+	};
+	$(document).ready(function() {	
+		//refreshConfig(); //refresh web page at load
+			
+		$("#light-button-set").click(function() {		
+			//var data = {'mode':'light','lux-RGB':$("#set-light-level-RGB").val(),'lux-R':$("#set-light-level-R").val(),'lux-G':$("#set-light-level-G").val(),'lux-B':$("#set-light-level-B").val()};
+			
+			var data = {'lux-RGB':$("#set-light-level-RGB").val()};			
+									
+			$.ajax({
+			url: 'setConfig',
+			type: 'POST',
+			contentType:'application/json',
+			data: JSON.stringify(data),
+			dataType:'json'
+			});
+			
+		});	
+		//setInterval("refreshConfig()", 15000);	//orig 5000	
+		
+		$("#light-button-read").click(function() {		
+			refreshConfig();				
+		});
+		
+		
+	});
+	</script>
+</head>
+
+<body>
+				<div id="light" class="ui-body-d ui-content"> 
+					<label for="set-light-level-RGB">RGB Color</label>
+					<input type="color" id="set-light-level-RGB" name="set-light-level-RGB"  value="#000000">
+					<p></p>
+				<input type="button" id="light-button-set" value="SET" >
+				<p></p>
+				<input type="button" id="light-button-read" value="READ" >				
+				
+				</div>					
+	</body>
+</html>
